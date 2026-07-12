@@ -2,6 +2,7 @@ import express from "express";
 import { preInterview } from "./schema";
 import axios from "axios";
 import cors from "cors"
+import { prisma } from "./db"
 
 const app = express()
 app.use(express.json())
@@ -23,14 +24,21 @@ app.post("/api/v1/pre-interview", async (req, res) => {
   try {
     const userRepos = await axios.get(`https://api.github.com/users/${githubUsername}/repos`)
 
-    const filteredResponse = userRepos.data.map((x: any) => ({
+    const githubData = userRepos.data.map((x: any) => ({
       description: x.description,
       name: x.name,
       fullName: x.full_name,
       starCount: x.stargazers_count
     }))
 
-    res.status(200).json(filteredResponse)
+    const interview = await prisma.interview.create({
+      data: {
+        githubMetadata: JSON.stringify(githubData),
+        status: "Pre"
+      }
+    })
+
+    res.status(200).json({ id: interview.id })
   } catch (err) {
     console.error(err)
     res.status(500).json({ message: "Failed to fetch GitHub repos" })
