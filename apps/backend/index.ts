@@ -16,10 +16,8 @@ app.post("api/v1/pre-interview", async (req,res)=>{
     }
 
     const githubUrl = data.githubUrl.endsWith("/") ? data.githubUrl.slice(0,-1) : data.githubUrl
-    const linkedinUrl = data.linkedinUrl.endsWith("/") ? data.linkedinUrl.slice(0,-1) : data.linkedinUrl
 
-    const githubUsername = "parththirwani";
-    const linkedinUsername = linkedinUrl.split("/").pop();
+    const githubUsername = githubUrl.split("/").pop();
 
     const userRepos = await axios.post(`https://api.github/users/${githubUsername}/repos`)
 
