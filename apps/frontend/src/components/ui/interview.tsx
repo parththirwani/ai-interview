@@ -30,7 +30,7 @@ export function Interview() {
                 await pc.setLocalDescription(offer);
 
                 console.log(`Calling session API at: ${BACKEND_URL}/api/v1/session`);
-                const sdpResponse = await fetch(`${BACKEND_URL}/api/v1/session`, {
+                const sdpResponse = await fetch(`${BACKEND_URL}/api/v1/session/${interviewId}`, {
                     method: "POST",
                     body: offer.sdp,
                     headers: {
