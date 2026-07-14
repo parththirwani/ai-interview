@@ -1,20 +1,19 @@
 import "../styles/global.css";
 import { Form } from "./components/ui/form";
-import { useState } from "react";
 import { Result } from "./components/ui/result";
 import { Interview } from "./components/ui/interview";
-import { Toaster } from "sonner";
+import { BrowserRouter, Route, Routes } from "react-router";
 
 export function App() {
-  const [page, setPage] = useState<"form" | "result" | "interview">("form")
 
   return (
-    <div>
-      {page == "form" && <Form/>}
-      {page == "interview" && <Interview/>}
-      {page == "result" && <Result/>}
-      <Toaster/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Form/>}/>
+        <Route path="/interview/:interviewId" element={<Interview/>}/>
+        <Route path="/result/:interviewId" element={<Result/>}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
